@@ -31,9 +31,10 @@ function usage () {
 }
 # Parse getopts
 # Abort if user not specified
-REM_USER=$USER
+REM_USER=rbrady # Cheyenne username
 WALLTIME="4:00:00"
-CONDA_ENV=pangeo-cheyenne
+CONDA_ENV=python3 # Current environment for Cheyenne
+ACCOUNT=P93300070 # Current BGC account
 if [ `uname` == "Darwin" ] || [ `uname` == "Linux" ]; then
   OPEN_BROWSER=TRUE
 fi
@@ -108,7 +109,7 @@ function launch_job () {
   QUEUE=share
   NODES=1
   CORES=1
-  ROOT_PATH=/glade/work/${REM_USER}/
+  ROOT_PATH=/glade/u/home/${REM_USER}
   SET_PY_ENV="source activate ${CONDA_ENV}"
 
   # 1) Clean up output file, then submit job
@@ -211,7 +212,7 @@ function create_tunnel () {
       fi
     done
   fi
-  cmd="ssh -N -L ${LOCALPORT}:${REM_HOST}:${PORT} ${REM_USER}@cheyenne.ucar.edu"
+  cmd="ssh -N -L localhost:${LOCALPORT}:${REM_HOST}:${PORT} ${REM_USER}@cheyenne.ucar.edu"
   echo $cmd
   nohup $cmd &
   tunnel=$!
